@@ -11,16 +11,16 @@ import jenkins.model.ParameterizedJobMixIn;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
-	
+
 	private boolean unstable;
 	private boolean failed;
 	private boolean aborted;
 	private boolean disabled;
 	private boolean stable;
-	
+
 	@DataBoundConstructor
-	public JobStatusFilter(boolean unstable, boolean failed, boolean aborted, 
-			boolean disabled, boolean stable, 
+	public JobStatusFilter(boolean unstable, boolean failed, boolean aborted,
+			boolean disabled, boolean stable,
 			String includeExcludeTypeString) {
 		super(includeExcludeTypeString);
 		this.unstable = unstable;
