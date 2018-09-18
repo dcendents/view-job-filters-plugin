@@ -12,8 +12,11 @@ import hudson.scm.ChangeLogSet;
 import hudson.scm.ChangeLogSet.Entry;
 import hudson.util.ReflectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -228,9 +231,24 @@ public class UserRelevanceFilter extends AbstractBuildTrendFilter {
 	}
 	@SuppressWarnings("unchecked")
 	public boolean matchesChangeLog(String userName, boolean matchAgainstFullName, Run run) {
+		List<ChangeLogSet<Entry>> sets = new ArrayList<ChangeLogSet<Entry>>();
+
 		if (run instanceof AbstractBuild) {
 			AbstractBuild build = (AbstractBuild) run;
-			ChangeLogSet<Entry> set = build.getChangeSet();
+			sets.add(build.getChangeSet());
+		} else {
+			try {
+				// try by reflection (for pipeline jobs)
+				sets.addAll((List) run.getClass().getMethod("getChangeSets").invoke(run));
+			} catch (IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+			} catch (NoSuchMethodException e) {
+			} catch (SecurityException e) {
+			}
+		}
+
+		for (ChangeLogSet<Entry> set : sets) {
 			for (Entry entry: set) {
 				User changeUser = entry.getAuthor();
 				String userMatchPart;
@@ -245,9 +263,10 @@ public class UserRelevanceFilter extends AbstractBuildTrendFilter {
 				}
 			}
 			return false;
-		} else {
-			return false;
+
 		}
+
+		return false;
 	}
 
 	@Extension
