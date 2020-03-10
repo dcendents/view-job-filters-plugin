@@ -33,7 +33,7 @@ public class JobStatusFilter extends AbstractIncludeExcludeJobFilter {
 	protected boolean matches(TopLevelItem item) {
 		if (item instanceof ParameterizedJobMixIn.ParameterizedJob) {
 			ParameterizedJobMixIn.ParameterizedJob project = (ParameterizedJobMixIn.ParameterizedJob) item;
-			if (disabled && project.isDisabled()) {
+			if (disabled && (project.isDisabled() || !project.isBuildable())) {
 				return true;
 			}
 		}
