@@ -10,7 +10,8 @@
 
     <artifactId>view-job-filters</artifactId>
     <packaging>hpi</packaging>
-    <version>${changelist}</version>
+    <!-- based on 369.ve0513a_a_f5524 -->
+    <version>369.ve0513b-SNAPSHOT</version>
     <name>View Job Filters</name>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
