@@ -54,6 +54,8 @@ public class JobMocker<T extends Job> {
                 return null;
             }
         }));
+        //default is buildable
+        this.buildable(true);
     }
 
     public static <C extends Job> JobMocker<C> jobOfType(JobType<C> jobType) {
@@ -111,6 +113,11 @@ public class JobMocker<T extends Job> {
         if (job instanceof ParameterizedJobMixIn.ParameterizedJob) {
             when(((ParameterizedJobMixIn.ParameterizedJob) job).isDisabled()).thenReturn(disabled);
         }
+        return this;
+    }
+
+    public JobMocker<T> buildable(boolean buildable) {
+        when(job.isBuildable()).thenReturn(buildable);
         return this;
     }
 
